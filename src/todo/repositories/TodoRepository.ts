@@ -32,6 +32,18 @@ class TodoRepository {
       }
     });
   }
+
+  async getAllTodos(): Promise<Todo[]> {
+    return new Promise((resolve, reject) => {
+      this.db.all<Todo>("SELECT * FROM todos", [], (err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(rows);
+        }
+      });
+    });
+  }
 }
 
 export default TodoRepository;
