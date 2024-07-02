@@ -18,6 +18,17 @@ class TodoController {
       }
     }
   }
+
+  async createTodo(req: Request, res: Response) {
+    try {
+      const newTodo = await this.todoService.createTodo(req.body);
+      res.status(201).json(newTodo);
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(400).json({ error: error.message });
+      }
+    }
+  }
 }
 
 export default TodoController;
