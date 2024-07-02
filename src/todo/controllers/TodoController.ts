@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import TodoService from "../services/TodoService";
-import { isNumber } from "lodash";
+import { isNumber, isString } from "lodash";
 import Todo from "../models/Todo";
 
 class TodoController {
@@ -22,6 +22,20 @@ class TodoController {
   }
 
   async createTodo(req: Request, res: Response) {
+    const { title, description } = req.body;
+
+    if (!title || !isString(title)) {
+      return res
+        .status(400)
+        .json({ error: 'Invalid or missing "title" parameter' });
+    }
+
+    if (!description || isString(description)) {
+      return res
+        .status(400)
+        .json({ error: 'Invalid or missing "description" parameter' });
+    }
+
     try {
       const newTodo = await this.todoService.createTodo(req.body);
       res.status(201).json(newTodo);
