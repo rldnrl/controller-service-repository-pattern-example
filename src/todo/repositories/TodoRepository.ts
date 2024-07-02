@@ -59,6 +59,23 @@ class TodoRepository {
       });
     });
   }
+
+  async updateTodoStatus(id: number, status: Todo["status"]): Promise<Todo> {
+    return new Promise((resolve, reject) => {
+      const sql = "UPDATE todos SET status = ? WHERE id = ?";
+      this.db.run(sql, [status, id], function (err) {
+        if (err) {
+          reject(err);
+        } else {
+          if (this.changes === 0) {
+            reject(new Error(`Todo with id ${id} not found`));
+          } else {
+            resolve({ id, status } as Todo);
+          }
+        }
+      });
+    });
+  }
 }
 
 export default TodoRepository;
