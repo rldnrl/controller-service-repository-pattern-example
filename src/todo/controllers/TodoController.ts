@@ -29,6 +29,18 @@ class TodoController {
       }
     }
   }
+
+  async updateTodoStatus(req: Request, res: Response) {
+    const { id, status } = req.body;
+    try {
+      const updatedTodo = await this.todoService.updateTodoStatus(id, status);
+      res.json(updatedTodo);
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(400).json({ error: error.message });
+      }
+    }
+  }
 }
 
 export default TodoController;
