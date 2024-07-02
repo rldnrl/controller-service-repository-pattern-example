@@ -18,6 +18,10 @@ class TodoService {
       status: "todo",
     });
   }
+
+  async updateTodoStatus(todoId: number, status: Todo["status"]) {
+    return this.todoRepository.updateTodoStatus(todoId, status);
+  }
 }
 
 export default TodoService;
