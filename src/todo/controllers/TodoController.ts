@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import TodoService from "../services/TodoService";
+import { isNumber } from "lodash";
+import Todo from "../models/Todo";
 
 class TodoController {
   private todoService: TodoService;
@@ -32,6 +34,18 @@ class TodoController {
 
   async updateTodoStatus(req: Request, res: Response) {
     const { id, status } = req.body;
+
+    if (!id || !isNumber(id)) {
+      res.status(400).json({ error: 'Invalid or missing "id" parameter' });
+    }
+
+    const statuses: Todo["status"][] = ["todo", "progress", "done"];
+
+    if (!status || !statuses.includes(status)) {
+      return res
+        .status(400)
+        .json({ error: 'Invalid or missing "status" parameter' });
+    }
     try {
       const updatedTodo = await this.todoService.updateTodoStatus(id, status);
       res.json(updatedTodo);
