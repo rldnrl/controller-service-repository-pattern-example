@@ -11,6 +11,13 @@ class TodoService {
   async getAllTodos() {
     return this.todoRepository.getAllTodos();
   }
+
+  async createTodo(todoData: Omit<Todo, "id">) {
+    return this.todoRepository.createTodo({
+      ...todoData,
+      status: "todo",
+    });
+  }
 }
 
 export default TodoService;
