@@ -44,6 +44,21 @@ class TodoRepository {
       });
     });
   }
+
+  async createTodo(todoData: Omit<Todo, "id">): Promise<Todo> {
+    return new Promise((resolve, reject) => {
+      const { title, description, status } = todoData;
+      const sql =
+        "INSERT INTO todos (title, description, status) VALUES (?, ?, ?)";
+      this.db.run(sql, [title, description, status], function (err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({ id: this.lastID, title, description, status });
+        }
+      });
+    });
+  }
 }
 
 export default TodoRepository;
