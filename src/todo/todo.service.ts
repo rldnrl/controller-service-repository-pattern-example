@@ -1,5 +1,5 @@
-import TodoRepository from "../repositories/TodoRepository";
-import Todo from "../models/Todo";
+import TodoRepository from "./todo.repository";
+import { Todo } from "./todo.model";
 
 class TodoService {
   private todoRepository: TodoRepository;

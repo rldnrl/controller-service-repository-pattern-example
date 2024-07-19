@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import TodoService from "../services/TodoService";
+import TodoService from "./todo.service";
 import { isNumber, isString } from "lodash";
-import Todo from "../models/Todo";
+import { Todo } from "./todo.model";
 
 class TodoController {
   private todoService: TodoService;

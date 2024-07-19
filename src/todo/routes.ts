@@ -1,5 +1,5 @@
 import { Router } from "express";
-import TodoController from "./controllers/TodoController";
+import TodoController from "./todo.controller";
 
 const router = Router();
 const todoController = new TodoController();

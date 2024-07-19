@@ -1,5 +1,5 @@
 import sqlite3 from "sqlite3";
-import Todo from "../models/Todo";
+import { Todo } from "./todo.model";
 
 class TodoRepository {
   private db: sqlite3.Database;
