@@ -78,7 +78,7 @@ class TodoController {
       !isArray(updates) ||
       updates.some(
         (update) =>
-          !update.id || !["todo", "progress", "done"].includes(update.status),
+          !update.id || !["todo", "progress", "done"].includes(update.status)
       )
     ) {
       return res.status(400).json({ error: "Invalid input" });
