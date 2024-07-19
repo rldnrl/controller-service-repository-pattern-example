@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import TodoService from "./todo.service";
-import { isNumber, isString } from "lodash";
+import { isArray, isNumber, isString } from "lodash";
 import { Todo } from "./todo.model";
 
 class TodoController {
@@ -47,9 +47,10 @@ class TodoController {
   }
 
   async updateTodoStatus(req: Request, res: Response) {
-    const { id, status } = req.body;
+    const { id } = req.params;
+    const { status } = req.body;
 
-    if (!id || !isNumber(id)) {
+    if (!id || !isNumber(+id)) {
       res.status(400).json({ error: 'Invalid or missing "id" parameter' });
     }
 
@@ -61,11 +62,34 @@ class TodoController {
         .json({ error: 'Invalid or missing "status" parameter' });
     }
     try {
-      const updatedTodo = await this.todoService.updateTodoStatus(id, status);
+      const updatedTodo = await this.todoService.updateTodoStatus(+id, status);
       res.json(updatedTodo);
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({ error: error.message });
+      }
+    }
+  }
+
+  async updateMultipleTodoStatuses(req: Request, res: Response) {
+    const updates = req.body;
+
+    if (
+      !isArray(updates) ||
+      updates.some(
+        (update) =>
+          !update.id || !["todo", "progress", "done"].includes(update.status),
+      )
+    ) {
+      return res.status(400).json({ error: "Invalid input" });
+    }
+
+    try {
+      await this.todoService.updateMultipleTodoStatuses(updates);
+      res.status(200).json({ message: "Todos updated successfully" });
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(500).json({ error: error.message });
       }
     }
   }
