@@ -1,0 +1,10 @@
+package.json
+yarn.lock
+.gitignore
+data
+node_modules
+README.md
+Dockerfile
+docker-compose.yml
+tsconfig.json
+dist
