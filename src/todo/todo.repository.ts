@@ -76,6 +76,42 @@ class TodoRepository {
       });
     });
   }
+
+  beginTransaction(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.db.run("BEGIN TRANSACTION", (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
+  commitTransaction(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.db.run("COMMIT", (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
+  rollbackTransaction(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.db.run("ROLLBACK", (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
 }
 
 export default TodoRepository;
