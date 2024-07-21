@@ -33,6 +33,10 @@ class TodoRepository {
     });
   }
 
+  getDb() {
+    return this.db;
+  }
+
   async getAllTodos(): Promise<Todo[]> {
     return new Promise((resolve, reject) => {
       this.db.all<Todo>("SELECT * FROM todos", [], (err, rows) => {
@@ -72,42 +76,6 @@ class TodoRepository {
           } else {
             resolve({ id, status } as Todo);
           }
-        }
-      });
-    });
-  }
-
-  beginTransaction(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.db.run("BEGIN TRANSACTION", (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    });
-  }
-
-  commitTransaction(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.db.run("COMMIT", (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    });
-  }
-
-  rollbackTransaction(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.db.run("ROLLBACK", (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
         }
       });
     });
