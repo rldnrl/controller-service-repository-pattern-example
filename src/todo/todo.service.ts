@@ -1,11 +1,16 @@
 import TodoRepository from "./todo.repository";
 import { Todo } from "./todo.model";
+import TransactionManager from "../common/transaction-manager";
 
 class TodoService {
   private todoRepository: TodoRepository;
+  private transactionManager: TransactionManager;
 
   constructor() {
     this.todoRepository = new TodoRepository();
+    this.transactionManager = new TransactionManager(
+      this.todoRepository.getDb()
+    );
   }
 
   async getAllTodos() {
@@ -26,14 +31,14 @@ class TodoService {
   async updateMultipleTodoStatuses(
     updates: { id: number; status: Todo["status"] }[]
   ) {
-    await this.todoRepository.beginTransaction();
+    await this.transactionManager.beginTransaction();
     try {
       for (const { id, status } of updates) {
         await this.todoRepository.updateTodoStatus(id, status);
       }
-      await this.todoRepository.commitTransaction();
+      await this.transactionManager.commitTransaction();
     } catch (error) {
-      await this.todoRepository.rollbackTransaction();
+      await this.transactionManager.rollbackTransaction();
       throw error;
     }
   }
